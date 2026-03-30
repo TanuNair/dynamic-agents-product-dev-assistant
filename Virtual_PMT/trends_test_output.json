@@ -1,0 +1,639 @@
+{
+  "keyword": "fitness apps",
+  "timeframe": "today 3-m",
+  "geo": "worldwide",
+  "timestamp": "2026-01-27 18:42:39",
+  "interest_over_time": {
+    "keyword": "fitness apps",
+    "error": "Error fetching data: The request failed: Google returned a response with code 429",
+    "timeframe": "today 3-m",
+    "geo": "worldwide"
+  },
+  "related_queries": {
+    "keyword": "fitness apps",
+    "geo": "worldwide",
+    "error": "Error fetching related queries: The request failed: Google returned a response with code 429"
+  },
+  "regional_interest": {
+    "keyword": "fitness apps",
+    "resolution": "COUNTRY",
+    "geo": "worldwide",
+    "total_regions": 143,
+    "top_regions": [
+      {
+        "location": "Central African Republic",
+        "interest": 100
+      },
+      {
+        "location": "Faroe Islands",
+        "interest": 68
+      },
+      {
+        "location": "U.S. Virgin Islands",
+        "interest": 50
+      },
+      {
+        "location": "Isle of Man",
+        "interest": 45
+      },
+      {
+        "location": "Guernsey",
+        "interest": 40
+      },
+      {
+        "location": "Australia",
+        "interest": 29
+      },
+      {
+        "location": "St. Helena",
+        "interest": 29
+      },
+      {
+        "location": "Barbados",
+        "interest": 27
+      },
+      {
+        "location": "United Kingdom",
+        "interest": 24
+      },
+      {
+        "location": "United States",
+        "interest": 23
+      }
+    ],
+    "all_regions": [
+      {
+        "location": "Central African Republic",
+        "interest": 100
+      },
+      {
+        "location": "Faroe Islands",
+        "interest": 68
+      },
+      {
+        "location": "U.S. Virgin Islands",
+        "interest": 50
+      },
+      {
+        "location": "Isle of Man",
+        "interest": 45
+      },
+      {
+        "location": "Guernsey",
+        "interest": 40
+      },
+      {
+        "location": "Australia",
+        "interest": 29
+      },
+      {
+        "location": "St. Helena",
+        "interest": 29
+      },
+      {
+        "location": "Barbados",
+        "interest": 27
+      },
+      {
+        "location": "United Kingdom",
+        "interest": 24
+      },
+      {
+        "location": "United States",
+        "interest": 23
+      },
+      {
+        "location": "Malta",
+        "interest": 22
+      },
+      {
+        "location": "New Zealand",
+        "interest": 22
+      },
+      {
+        "location": "Ireland",
+        "interest": 22
+      },
+      {
+        "location": "Canada",
+        "interest": 21
+      },
+      {
+        "location": "Congo - Brazzaville",
+        "interest": 20
+      },
+      {
+        "location": "Zimbabwe",
+        "interest": 17
+      },
+      {
+        "location": "Singapore",
+        "interest": 17
+      },
+      {
+        "location": "Trinidad & Tobago",
+        "interest": 17
+      },
+      {
+        "location": "Botswana",
+        "interest": 17
+      },
+      {
+        "location": "Maldives",
+        "interest": 16
+      },
+      {
+        "location": "Guyana",
+        "interest": 15
+      },
+      {
+        "location": "South Africa",
+        "interest": 15
+      },
+      {
+        "location": "Fiji",
+        "interest": 15
+      },
+      {
+        "location": "Cyprus",
+        "interest": 14
+      },
+      {
+        "location": "Togo",
+        "interest": 14
+      },
+      {
+        "location": "Iceland",
+        "interest": 14
+      },
+      {
+        "location": "Namibia",
+        "interest": 13
+      },
+      {
+        "location": "United Arab Emirates",
+        "interest": 13
+      },
+      {
+        "location": "North Macedonia",
+        "interest": 13
+      },
+      {
+        "location": "Kosovo",
+        "interest": 12
+      },
+      {
+        "location": "Kenya",
+        "interest": 12
+      },
+      {
+        "location": "Luxembourg",
+        "interest": 12
+      },
+      {
+        "location": "Brunei",
+        "interest": 12
+      },
+      {
+        "location": "Jamaica",
+        "interest": 12
+      },
+      {
+        "location": "Germany",
+        "interest": 11
+      },
+      {
+        "location": "Somalia",
+        "interest": 11
+      },
+      {
+        "location": "Austria",
+        "interest": 11
+      },
+      {
+        "location": "Switzerland",
+        "interest": 11
+      },
+      {
+        "location": "Albania",
+        "interest": 10
+      },
+      {
+        "location": "Zambia",
+        "interest": 10
+      },
+      {
+        "location": "Malawi",
+        "interest": 10
+      },
+      {
+        "location": "Latvia",
+        "interest": 10
+      },
+      {
+        "location": "Denmark",
+        "interest": 9
+      },
+      {
+        "location": "Mauritius",
+        "interest": 9
+      },
+      {
+        "location": "Mongolia",
+        "interest": 9
+      },
+      {
+        "location": "Estonia",
+        "interest": 9
+      },
+      {
+        "location": "Portugal",
+        "interest": 9
+      },
+      {
+        "location": "Sri Lanka",
+        "interest": 9
+      },
+      {
+        "location": "Slovenia",
+        "interest": 9
+      },
+      {
+        "location": "Lithuania",
+        "interest": 9
+      },
+      {
+        "location": "Lebanon",
+        "interest": 8
+      },
+      {
+        "location": "Nigeria",
+        "interest": 8
+      },
+      {
+        "location": "Pakistan",
+        "interest": 8
+      },
+      {
+        "location": "Rwanda",
+        "interest": 8
+      },
+      {
+        "location": "Malaysia",
+        "interest": 8
+      },
+      {
+        "location": "Qatar",
+        "interest": 8
+      },
+      {
+        "location": "Netherlands",
+        "interest": 8
+      },
+      {
+        "location": "Ethiopia",
+        "interest": 7
+      },
+      {
+        "location": "Philippines",
+        "interest": 7
+      },
+      {
+        "location": "South Korea",
+        "interest": 7
+      },
+      {
+        "location": "Georgia",
+        "interest": 7
+      },
+      {
+        "location": "Puerto Rico",
+        "interest": 7
+      },
+      {
+        "location": "Belgium",
+        "interest": 7
+      },
+      {
+        "location": "Bahrain",
+        "interest": 7
+      },
+      {
+        "location": "Uganda",
+        "interest": 7
+      },
+      {
+        "location": "Armenia",
+        "interest": 7
+      },
+      {
+        "location": "Kuwait",
+        "interest": 6
+      },
+      {
+        "location": "India",
+        "interest": 6
+      },
+      {
+        "location": "Nepal",
+        "interest": 6
+      },
+      {
+        "location": "Ghana",
+        "interest": 6
+      },
+      {
+        "location": "Israel",
+        "interest": 6
+      },
+      {
+        "location": "Afghanistan",
+        "interest": 6
+      },
+      {
+        "location": "Bosnia & Herzegovina",
+        "interest": 6
+      },
+      {
+        "location": "Bulgaria",
+        "interest": 6
+      },
+      {
+        "location": "Slovakia",
+        "interest": 6
+      },
+      {
+        "location": "Croatia",
+        "interest": 6
+      },
+      {
+        "location": "China",
+        "interest": 6
+      },
+      {
+        "location": "Bangladesh",
+        "interest": 5
+      },
+      {
+        "location": "Greece",
+        "interest": 5
+      },
+      {
+        "location": "Hong Kong",
+        "interest": 5
+      },
+      {
+        "location": "Spain",
+        "interest": 5
+      },
+      {
+        "location": "Hungary",
+        "interest": 5
+      },
+      {
+        "location": "Norway",
+        "interest": 5
+      },
+      {
+        "location": "Serbia",
+        "interest": 5
+      },
+      {
+        "location": "Tanzania",
+        "interest": 5
+      },
+      {
+        "location": "Laos",
+        "interest": 5
+      },
+      {
+        "location": "Sweden",
+        "interest": 5
+      },
+      {
+        "location": "Romania",
+        "interest": 5
+      },
+      {
+        "location": "Costa Rica",
+        "interest": 5
+      },
+      {
+        "location": "Czechia",
+        "interest": 5
+      },
+      {
+        "location": "Tunisia",
+        "interest": 5
+      },
+      {
+        "location": "Myanmar (Burma)",
+        "interest": 5
+      },
+      {
+        "location": "Palestine",
+        "interest": 5
+      },
+      {
+        "location": "Oman",
+        "interest": 5
+      },
+      {
+        "location": "Iraq",
+        "interest": 4
+      },
+      {
+        "location": "Uzbekistan",
+        "interest": 4
+      },
+      {
+        "location": "Algeria",
+        "interest": 4
+      },
+      {
+        "location": "Egypt",
+        "interest": 4
+      },
+      {
+        "location": "Cameroon",
+        "interest": 4
+      },
+      {
+        "location": "Sudan",
+        "interest": 4
+      },
+      {
+        "location": "Cambodia",
+        "interest": 4
+      },
+      {
+        "location": "Saudi Arabia",
+        "interest": 4
+      },
+      {
+        "location": "Moldova",
+        "interest": 4
+      },
+      {
+        "location": "Morocco",
+        "interest": 4
+      },
+      {
+        "location": "Finland",
+        "interest": 4
+      },
+      {
+        "location": "Jordan",
+        "interest": 4
+      },
+      {
+        "location": "Syria",
+        "interest": 3
+      },
+      {
+        "location": "Senegal",
+        "interest": 3
+      },
+      {
+        "location": "Panama",
+        "interest": 3
+      },
+      {
+        "location": "Vietnam",
+        "interest": 3
+      },
+      {
+        "location": "Libya",
+        "interest": 3
+      },
+      {
+        "location": "Cuba",
+        "interest": 3
+      },
+      {
+        "location": "Azerbaijan",
+        "interest": 3
+      },
+      {
+        "location": "El Salvador",
+        "interest": 3
+      },
+      {
+        "location": "Congo - Kinshasa",
+        "interest": 3
+      },
+      {
+        "location": "Ecuador",
+        "interest": 3
+      },
+      {
+        "location": "Dominican Republic",
+        "interest": 3
+      },
+      {
+        "location": "Colombia",
+        "interest": 2
+      },
+      {
+        "location": "Mexico",
+        "interest": 2
+      },
+      {
+        "location": "Ukraine",
+        "interest": 2
+      },
+      {
+        "location": "Argentina",
+        "interest": 2
+      },
+      {
+        "location": "Peru",
+        "interest": 2
+      },
+      {
+        "location": "Uruguay",
+        "interest": 2
+      },
+      {
+        "location": "Paraguay",
+        "interest": 2
+      },
+      {
+        "location": "Guatemala",
+        "interest": 2
+      },
+      {
+        "location": "Thailand",
+        "interest": 2
+      },
+      {
+        "location": "Brazil",
+        "interest": 2
+      },
+      {
+        "location": "France",
+        "interest": 2
+      },
+      {
+        "location": "Taiwan",
+        "interest": 2
+      },
+      {
+        "location": "Kyrgyzstan",
+        "interest": 2
+      },
+      {
+        "location": "Honduras",
+        "interest": 2
+      },
+      {
+        "location": "Chile",
+        "interest": 2
+      },
+      {
+        "location": "Bolivia",
+        "interest": 2
+      },
+      {
+        "location": "Kazakhstan",
+        "interest": 2
+      },
+      {
+        "location": "Italy",
+        "interest": 2
+      },
+      {
+        "location": "Poland",
+        "interest": 2
+      },
+      {
+        "location": "T\u00fcrkiye",
+        "interest": 1
+      },
+      {
+        "location": "Belarus",
+        "interest": 1
+      },
+      {
+        "location": "Japan",
+        "interest": 1
+      },
+      {
+        "location": "Iran",
+        "interest": 1
+      },
+      {
+        "location": "Indonesia",
+        "interest": 1
+      },
+      {
+        "location": "Russia",
+        "interest": 1
+      },
+      {
+        "location": "Venezuela",
+        "interest": 1
+      }
+    ]
+  }
+}
