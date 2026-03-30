@@ -1,6 +1,8 @@
 """
 config.py - Shared configuration, constants, and utilities
 
+This module contains all shared constants to avoid circular imports.
+Other modules can import from here without creating dependency cycles.
 """
 
 from typing import List, Dict, Any
@@ -87,6 +89,7 @@ class AppState(BaseModel):
     plan: List[Dict[str, str]] = Field(default_factory=list)          # Original plan from planner
     reviewed_plan: List[Dict[str, str]] = Field(default_factory=list) # Plan after judge review
     enhanced_plan: List[Dict[str, str]] = Field(default_factory=list) # Plan after enhancement
+    approved_plan: List[Dict[str, str]] = Field(default_factory=list) # Plan after human approval
     current_step: int = 0                               # Which step we're executing
     results: List[Dict[str, Any]] = Field(default_factory=list)       # Results from each agent
     conv_memory: list = []                              # Conversation history
@@ -94,7 +97,10 @@ class AppState(BaseModel):
     done: bool = False                                  # Execution complete flag
     judge_feedback: str = ""                            # Feedback from judge node
     human_approved: bool = False                        # Human approval flag
+    human_modifications: str = ""                       # User's modification requests
+    awaiting_approval: bool = False                     # Flag to pause for approval
     validation_errors: List[str] = Field(default_factory=list)        # Track validation issues
+    demo_mode: bool = False                             # Use cached responses for speed
 
 
 # ============================================================================

@@ -3,6 +3,7 @@ executor.py - Task execution node
 
 Executes tasks from the enhanced plan one by one.
 Each task is performed by a specialized agent (LLM with role-specific prompts).
+Research agents automatically fetch real Google Trends data.
 """
 
 from langchain_ollama import OllamaLLM
@@ -22,6 +23,249 @@ llm = OllamaLLM(
 )
 
 
+def extract_keywords_from_query(query: str) -> str:
+    """
+    Extract main keywords from user query for Google Trends search.
+    
+    Simple keyword extraction - just take key phrases.
+    
+    Args:
+        query: User's input like "Build a fitness tracking app"
+        
+    Returns:
+        Cleaned keyword like "fitness app"
+    """
+    query_lower = query.lower()
+    
+    # Common patterns to extract
+    patterns = [
+        "fitness app", "meal planning app", "meditation app",
+        "social media app", "productivity app", "gaming app",
+        "e-commerce", "saas", "marketplace",
+        "fitness", "health", "wellness", "food", "nutrition"
+    ]
+    
+    # Check if any pattern matches
+    for pattern in patterns:
+        if pattern in query_lower:
+            return pattern
+    
+    # Fallback: remove common words and take first few words
+    stop_words = ["build", "create", "make", "develop", "a", "an", "the", "for", "to"]
+    words = query_lower.split()
+    keywords = [w for w in words if w not in stop_words]
+    
+    return " ".join(keywords[:3]) if keywords else query
+
+
+def fetch_google_trends_data(user_input: str, phase: str) -> str:
+    """
+    Fetch Google Trends data for research agent.
+    
+    This runs automatically when research_agent is executing.
+    Returns formatted string to inject into LLM prompt.
+    
+    Args:
+        user_input: User's original query
+        phase: Current product phase
+        
+    Returns:
+        Formatted string with Google Trends insights
+    """
+    try:
+        # Import here to avoid issues if tools not set up yet
+        from tools.google_trends import search_trends
+        
+        # Extract keyword from user input
+        keyword = extract_keywords_from_query(user_input)
+        
+        print(f"\n{'='*60}")
+        print(f"🔍 FETCHING GOOGLE TRENDS DATA")
+        print(f"{'='*60}")
+        print(f"Keyword: '{keyword}'")
+        print(f"Timeframe: Past 12 months")
+        print(f"Geography: India")
+        print(f"⏳ Please wait 5-10 seconds...")
+        
+        # Fetch data (India-focused by default, adjust as needed)
+        data = search_trends(keyword, timeframe="today 12-m", geo="IN")
+        
+        interest = data['interest_over_time']
+        
+        # Check if data fetch failed
+        if 'error' in interest:
+            print(f"⚠️  Google Trends unavailable: {interest['error']}")
+            return ""
+        
+        print(f"✅ Data fetched successfully!")
+        print(f"{'='*60}\n")
+        
+        # Format data for LLM prompt
+        trends_section = f"""
+═══════════════════════════════════════════════════════════
+REAL MARKET DATA FROM GOOGLE TRENDS
+═══════════════════════════════════════════════════════════
+
+**CRITICAL: This is REAL data from Google Trends API. Use these exact numbers in your analysis. Do NOT make up statistics!**
+
+Keyword Analyzed: "{keyword}"
+Geography: India
+Timeframe: Past 12 months
+
+📊 SEARCH INTEREST TRENDS:
+- Current Interest Level: {interest['current_interest']}/100
+- Average Interest: {interest['average_interest']}/100
+- Trend Direction: {interest['trend_direction'].upper()}
+- Change Over Period: {interest['percent_change']:+.1f}%
+- Peak Interest: {interest['peak_interest']}/100 on {interest['peak_date']}
+
+"""
+        
+        # Add related queries if available
+        related = data['related_queries']
+        if related.get('top_queries'):
+            trends_section += "🔍 TOP RELATED SEARCHES (What people also search for):\n"
+            for i, query in enumerate(related['top_queries'][:5], 1):
+                trends_section += f"{i}. \"{query['query']}\" (interest: {query['value']}/100)\n"
+            trends_section += "\n"
+        
+        # Add rising queries if available
+        if related.get('rising_queries'):
+            trends_section += "🔥 RISING SEARCHES (Fastest growing trends):\n"
+            for i, query in enumerate(related['rising_queries'][:5], 1):
+                value = query['value']
+                if value == "Breakout":
+                    trends_section += f"{i}. \"{query['query']}\" (BREAKOUT: +5000% growth!)\n"
+                else:
+                    trends_section += f"{i}. \"{query['query']}\" ({value} increase)\n"
+            trends_section += "\n"
+        
+        # Add regional data
+        regional = data['regional_interest']
+        if regional.get('top_regions'):
+            trends_section += "🌍 TOP REGIONS GLOBALLY:\n"
+            for i, region in enumerate(regional['top_regions'][:5], 1):
+                trends_section += f"{i}. {region['location']}: {region['interest']}/100 interest\n"
+            trends_section += "\n"
+        
+        trends_section += """═══════════════════════════════════════════════════════════
+INSTRUCTIONS FOR USE:
+- Reference these statistics in your market analysis
+- Cite as "Google Trends data" for credibility
+- Use rising searches to identify opportunities
+- Use regional data to inform target market selection
+═══════════════════════════════════════════════════════════
+"""
+        
+        return trends_section
+        
+    except ImportError:
+        print("⚠️  Google Trends tool not available (import failed)")
+        return ""
+    except Exception as e:
+        print(f"⚠️  Error fetching Google Trends: {str(e)}")
+        return ""
+
+
+def fetch_web_search_data(user_input: str, agent_type: str) -> str:
+    """
+    Fetch web search data for agents that need current information.
+    
+    This runs automatically for certain agent types.
+    Returns formatted string to inject into LLM prompt.
+    
+    Args:
+        user_input: User's original query
+        agent_type: Type of agent requesting data
+        
+    Returns:
+        Formatted string with web search results
+    """
+    try:
+        # Import here to avoid issues if tools not set up yet
+        from tools.web_search import web_search
+        
+        # Extract keyword from user input
+        keyword = extract_keywords_from_query(user_input)
+        
+        # Determine if we need news based on agent type
+        include_news = agent_type in ["research_agent", "marketing_agent"]
+        
+        print(f"\n{'='*60}")
+        print(f"🌐 FETCHING WEB SEARCH DATA")
+        print(f"{'='*60}")
+        print(f"Query: '{keyword}'")
+        print(f"Agent: {agent_type}")
+        print(f"Include news: {include_news}")
+        print(f"⏳ Please wait...")
+        
+        # Fetch data
+        data = web_search(keyword, max_results=5, include_news=include_news)
+        
+        web_results = data.get('web_results', {})
+        
+        # Check if data fetch failed
+        if 'error' in web_results:
+            print(f"⚠️  Web search unavailable: {web_results['error']}")
+            return ""
+        
+        print(f"✅ Data fetched successfully!")
+        print(f"{'='*60}\n")
+        
+        # Format data for LLM prompt
+        search_section = f"""
+═══════════════════════════════════════════════════════════
+REAL WEB SEARCH RESULTS
+═══════════════════════════════════════════════════════════
+
+**CRITICAL: This is REAL data from web search. Use this information in your analysis. Do NOT make up information!**
+
+Search Query: "{keyword}"
+Timestamp: {data.get('timestamp', 'N/A')}
+
+🌐 WEB SEARCH RESULTS:
+"""
+        
+        # Add web results
+        results = web_results.get('results', [])
+        if results:
+            for i, result in enumerate(results, 1):
+                search_section += f"\n{i}. **{result['title']}**\n"
+                search_section += f"   URL: {result['url']}\n"
+                search_section += f"   {result['snippet']}\n"
+        else:
+            search_section += "\nNo web results found.\n"
+        
+        # Add news results if available
+        news_results = data.get('news_results')
+        if news_results and news_results.get('results'):
+            search_section += "\n📰 RECENT NEWS ARTICLES:\n"
+            for i, article in enumerate(news_results['results'], 1):
+                search_section += f"\n{i}. **{article['title']}**\n"
+                search_section += f"   Source: {article.get('source', 'Unknown')} | Date: {article.get('date', 'Unknown')}\n"
+                search_section += f"   URL: {article['url']}\n"
+                search_section += f"   {article['snippet']}\n"
+        
+        search_section += """
+═══════════════════════════════════════════════════════════
+INSTRUCTIONS FOR USE:
+- Reference these sources in your analysis
+- Cite URLs for credibility
+- Use recent news to identify current trends
+- Cross-reference multiple sources for accuracy
+═══════════════════════════════════════════════════════════
+"""
+        
+        return search_section
+        
+    except ImportError:
+        print("⚠️  Web search tool not available (import failed)")
+        return ""
+    except Exception as e:
+        print(f"⚠️  Error fetching web search: {str(e)}")
+        return ""
+
+
 def executor_node(state):
     """
     Executes tasks from the enhanced plan sequentially.
@@ -39,9 +283,11 @@ def executor_node(state):
     Returns:
         Dictionary with updated results, step, and done flag
     """
-    # Use enhanced_plan (which came from enhancer node)
-    # If enhancer made no changes, enhanced_plan = reviewed_plan
-    plan = state.enhanced_plan if state.enhanced_plan else state.reviewed_plan
+    # Use approved_plan (which came from approval node)
+    # Falls back to enhanced_plan if no approval, then reviewed_plan
+    plan = (state.approved_plan if state.approved_plan 
+            else state.enhanced_plan if state.enhanced_plan 
+            else state.reviewed_plan)
     step = state.step
     results = state.results
     phase = state.phase
@@ -69,18 +315,55 @@ def executor_node(state):
     print(f"EXECUTOR: Step {step + 1}/{len(plan)}")
     print(f"Agent: {agent_type.replace('_', ' ').title()}")
     print(f"Task: {task[:100]}...")
+    if state.demo_mode:
+        print(f"⚡ DEMO MODE: Using cached response")
     print(f"{'='*60}")
 
-    # Get context from previous agent outputs
-    # This allows agents to build on each other's work
-    previous_outputs = "\n\n".join([
-        f"{r['agent_type'].replace('_', ' ').title()}:\n{r['output'][:200]}..."
-        for r in results[-3:]  # Last 3 outputs for context
-    ]) if results else "No previous agent outputs yet."
+    # DEMO MODE: Use cached responses for instant results
+    if state.demo_mode:
+        from demo_responses import get_demo_response, is_demo_mode_available
+        
+        if is_demo_mode_available(phase, agent_type, state.input):
+            output = get_demo_response(phase, agent_type, state.input)
+            print(f"✅ Demo response loaded ({len(output)} characters)")
+        else:
+            # Fall back to simple templated response
+            output = f"""# {agent_type.replace('_', ' ').title()} Output
 
-    # Build agent-specific prompt
-    # Each agent type gets a persona and context
-    prompt = f"""You are acting as the '{agent_type.replace('_', ' ').title()}' agent in a {phase} phase product development process.
+Task: {task}
+
+This is a demo mode response. The actual output would be generated here based on:
+- Phase: {phase}
+- Agent Type: {agent_type}
+- Specific Requirements: {task}
+
+[Demo mode active - switch to full LLM mode for custom responses]
+"""
+            print(f"✅ Generic demo response generated")
+    else:
+        # FULL LLM MODE: Original behavior with tool integration
+        
+        # Fetch tool data based on agent type
+        google_trends_data = ""
+        web_search_data = ""
+        
+        # Research agent gets both Google Trends and Web Search
+        if agent_type == "research_agent":
+            google_trends_data = fetch_google_trends_data(state.input, phase)
+            web_search_data = fetch_web_search_data(state.input, agent_type)
+        
+        # Data analyst, marketing agent, and user researcher get Web Search
+        elif agent_type in ["data_analyst", "marketing_agent", "user_researcher"]:
+            web_search_data = fetch_web_search_data(state.input, agent_type)
+        
+        # Get context from previous agent outputs
+        previous_outputs = "\n\n".join([
+            f"{r['agent_type'].replace('_', ' ').title()}:\n{r['output'][:200]}..."
+            for r in results[-3:]
+        ]) if results else "No previous agent outputs yet."
+
+        # Build agent-specific prompt
+        prompt = f"""You are acting as the '{agent_type.replace('_', ' ').title()}' agent in a {phase} phase product development process.
 
 YOUR ROLE:
 {get_agent_role_description(agent_type)}
@@ -91,24 +374,30 @@ YOUR CURRENT TASK:
 CONTEXT FROM PREVIOUS AGENTS:
 {previous_outputs}
 
+{google_trends_data}
+
+{web_search_data}
+
 IMPORTANT INSTRUCTIONS:
 - Provide detailed, actionable output in markdown format
 - Be specific and practical
 - Consider the {phase} phase constraints
 - Build on previous agents' work when relevant
+- If you have Google Trends data above, USE IT! Don't make up statistics.
+- If you have web search results above, USE THEM! Reference the URLs and sources.
 - If you need clarification, state what's unclear
 
 Provide your output:
 """
 
-    # Execute the task with LLM
-    print(f"🤖 Executing...")
-    try:
-        output = llm.invoke(prompt)
-        print(f"✅ Completed ({len(output)} characters)")
-    except Exception as e:
-        print(f"❌ Error: {str(e)}")
-        output = f"Error executing task: {str(e)}"
+        # Execute the task with LLM
+        print(f"🤖 Executing with LLM...")
+        try:
+            output = llm.invoke(prompt)
+            print(f"✅ Completed ({len(output)} characters)")
+        except Exception as e:
+            print(f"❌ Error: {str(e)}")
+            output = f"Error executing task: {str(e)}"
 
     # Save to conversation memory
     conversation_memory.add(agent_type, output)
